@@ -9,6 +9,8 @@ function App() {
     const [likeData, setLikeData] = useState([]);
     const [titleInput, setTitleInput] = useState("");
 
+    const nextId = useRef(0);
+
     const titleInputRef = useRef();
 
     const writeNewPost = (input) => {
@@ -16,18 +18,20 @@ function App() {
             return titleInputRef.current.focus();
         }
         const tempPostData = [...postData];
-        tempPostData.unshift(input);
+        tempPostData.unshift({ id: nextId.current, title: input, content: "내용 없음" });
         setPostData(tempPostData);
         setTitleInput("");
 
         const tempLikes = [...likeData];
-        tempLikes.unshift(0);
+        tempLikes.unshift({ id: nextId.current, like: 0 });
         setLikeData(tempLikes);
+
+        nextId.current++;
     };
 
     const plusLike = (index) => {
         const tempLikeData = [...likeData];
-        tempLikeData[index] += 1;
+        tempLikeData[index].like += 1;
         setLikeData(tempLikeData);
     };
 
@@ -49,10 +53,10 @@ function App() {
                 <Stack gap={1}>
                     {postData.map((post, index) => {
                         return (
-                            <div className="bg-light border post">
+                            <div key={post.id} className="bg-light border post">
                                 <div className="text">
-                                    <strong>{post}</strong>
-                                    <span>content</span>
+                                    <strong>{post.title}</strong>
+                                    <span>{post.content}</span>
                                 </div>
                                 <div className="buttonBox">
                                     <Button className="modify" variant="outline-primary" onClick={() => {}}>
@@ -63,7 +67,7 @@ function App() {
                                     </Button>
                                     <Button className="like" variant="outline-primary" onClick={() => plusLike(index)}>
                                         <strong>❤</strong>
-                                        <span>{likeData[index]}</span>
+                                        <span>{likeData[index].like}</span>
                                     </Button>
                                 </div>
                             </div>
