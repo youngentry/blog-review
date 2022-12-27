@@ -10,20 +10,22 @@ import WriteForm from "./components/WriteForm";
 function App() {
     const dispatch = useDispatch();
     const postData = useSelector((state) => state.postData);
+    const [copiedPostData, setCopiedPostData] = useState([...postData]);
     const [titleRenameInput, setTitleRenameInput] = useState("");
     const [selectedPostIndex, setSelectedPostIndex] = useState(null);
     const [modifyVisible, setModifyVisible] = useState(false);
     const [contentModalVisible, setContentModalVisible] = useState(false);
     const [selectedPostId, setSelectedPostId] = useState(null);
+    const [orderForSort, setOrderForSort] = useState(1);
 
     const deletePost = (index) => {
-        const tempPostData = [...postData];
+        const tempPostData = [...copiedPostData];
         tempPostData.splice(index, 1);
         dispatch(setPostData(tempPostData));
     };
 
     const openPostModify = (index) => {
-        setTitleRenameInput(postData[index].title);
+        setTitleRenameInput(copiedPostData[index].title);
         setSelectedPostIndex(index);
         setModifyVisible(true);
     };
@@ -33,20 +35,54 @@ function App() {
         setModifyVisible(false);
     };
 
+    const openContentModal = (id, index) => {
+        setSelectedPostId(id);
+        setSelectedPostIndex(index);
+        setContentModalVisible(true);
+    };
+
+    const sortPost = (e) => {
+        const tempPostData = [...copiedPostData];
+        const order = e.target.value;
+        setOrderForSort(order);
+
+        if (order === "new") {
+            tempPostData.sort((a, b) => a.id - b.id);
+            setCopiedPostData(tempPostData);
+        }
+        if (order === "old") {
+            tempPostData.sort((a, b) => b.id - a.id);
+            setCopiedPostData(tempPostData);
+        }
+        if (order === "alphabet") {
+            tempPostData.sort((a, b) => a.title.localeCompare(b.title));
+            setCopiedPostData(tempPostData);
+        }
+    };
+
     useEffect(() => {
         console.log(postData);
         setModifyVisible(false);
+        setCopiedPostData([...postData]);
     }, [postData]);
 
     return (
         <div className="App">
             <div className="container">
                 <Stack gap={1}>
+                    <div className="utility">
+                        <span className="search">검색</span>
+                        <Form.Select className="sort" aria-label="Default select example" value={orderForSort} onChange={(e) => sortPost(e)}>
+                            <option value="new">최신순</option>
+                            <option value="old">오래된 순</option>
+                            <option value="alphabet">가나다순</option>
+                        </Form.Select>
+                    </div>
                     <WriteForm />
                     {postData.length === 0 ? (
                         <div>게시물이 없습니다.</div>
                     ) : (
-                        postData.map((post, index) => {
+                        copiedPostData.map((post, index) => {
                             return (
                                 <div key={post.id} className="bg-light border post">
                                     <div className="overviewPost">
@@ -68,9 +104,7 @@ function App() {
                                             className="text"
                                             onClick={() => {
                                                 console.log(post);
-                                                setSelectedPostId(post.id);
-                                                setSelectedPostIndex(index);
-                                                setContentModalVisible(true);
+                                                openContentModal(post.id, index);
                                             }}
                                         >
                                             <strong>{post.title}</strong>
@@ -85,7 +119,7 @@ function App() {
                                             </Button>
                                             <Button className="like" variant="outline-primary" onClick={() => dispatch(plusLike(index))}>
                                                 <strong>❤</strong>
-                                                <span>{postData[index].like}</span>
+                                                <span>{copiedPostData[index].like}</span>
                                             </Button>
                                         </div>
                                     </div>

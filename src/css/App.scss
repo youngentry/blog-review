@@ -10,6 +10,17 @@
     }
 }
 
+.utility {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 5px;
+    .sort {
+        width: 110px;
+        margin-left: 10px;
+    }
+}
+
 .post {
     .overviewPost {
         position: relative;
