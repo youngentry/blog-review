@@ -16,16 +16,16 @@ function App() {
     const [modifyVisible, setModifyVisible] = useState(false);
     const [contentModalVisible, setContentModalVisible] = useState(false);
     const [selectedPostId, setSelectedPostId] = useState(null);
-    const [orderForSort, setOrderForSort] = useState(1);
+    const [orderForSort, setOrderForSort] = useState("new");
 
     const deletePost = (index) => {
-        const tempPostData = [...copiedPostData];
+        const tempPostData = [...postData];
         tempPostData.splice(index, 1);
         dispatch(setPostData(tempPostData));
     };
 
     const openPostModify = (index) => {
-        setTitleRenameInput(copiedPostData[index].title);
+        setTitleRenameInput(postData[index].title);
         setSelectedPostIndex(index);
         setModifyVisible(true);
     };
@@ -40,30 +40,28 @@ function App() {
         setSelectedPostIndex(index);
         setContentModalVisible(true);
     };
-
-    const sortPost = (e) => {
-        const tempPostData = [...copiedPostData];
-        const order = e.target.value;
+    const sortPost = (order) => {
+        const tempPostData = [...postData];
         setOrderForSort(order);
+        console.log(order);
 
         if (order === "new") {
-            tempPostData.sort((a, b) => a.id - b.id);
-            setCopiedPostData(tempPostData);
+            tempPostData.sort((a, b) => b.id - a.id);
         }
         if (order === "old") {
-            tempPostData.sort((a, b) => b.id - a.id);
-            setCopiedPostData(tempPostData);
+            tempPostData.sort((a, b) => a.id - b.id);
         }
         if (order === "alphabet") {
             tempPostData.sort((a, b) => a.title.localeCompare(b.title));
-            setCopiedPostData(tempPostData);
         }
+        setCopiedPostData(tempPostData);
     };
 
     useEffect(() => {
         console.log(postData);
         setModifyVisible(false);
         setCopiedPostData([...postData]);
+        sortPost(orderForSort);
     }, [postData]);
 
     return (
@@ -72,7 +70,7 @@ function App() {
                 <Stack gap={1}>
                     <div className="utility">
                         <span className="search">검색</span>
-                        <Form.Select className="sort" aria-label="Default select example" value={orderForSort} onChange={(e) => sortPost(e)}>
+                        <Form.Select className="sort" aria-label="Default select example" value={orderForSort} onChange={(e) => sortPost(e.target.value)}>
                             <option value="new">최신순</option>
                             <option value="old">오래된 순</option>
                             <option value="alphabet">가나다순</option>
