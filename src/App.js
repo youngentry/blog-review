@@ -4,16 +4,17 @@ import Button from "react-bootstrap/Button";
 import { useEffect, useState } from "react";
 import { Form, Stack } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { modifyPostData, plusLikeData, setPostData } from "./store";
+import { modifyPostData, plusLike, setPostData } from "./store";
 import WriteForm from "./components/WriteForm";
 
 function App() {
     const dispatch = useDispatch();
     const postData = useSelector((state) => state.postData);
-    const likeData = useSelector((state) => state.likeData);
     const [titleRenameInput, setTitleRenameInput] = useState("");
-    const [modifyVisible, setModifyVisible] = useState(false);
     const [selectedPostIndex, setSelectedPostIndex] = useState(null);
+    const [modifyVisible, setModifyVisible] = useState(false);
+    const [contentModalVisible, setContentModalVisible] = useState(false);
+    const [selectedPostId, setSelectedPostId] = useState(null);
 
     const deletePost = (index) => {
         const tempPostData = [...postData];
@@ -48,35 +49,50 @@ function App() {
                         postData.map((post, index) => {
                             return (
                                 <div key={post.id} className="bg-light border post">
-                                    <div className={`modifyForm ${selectedPostIndex === index && modifyVisible && "visible"}`}>
-                                        <Form.Control
-                                            className="me-auto modifyBox"
-                                            value={titleRenameInput}
-                                            onChange={(e) => setTitleRenameInput(e.target.value)}
-                                            onKeyUp={() => window.event.keyCode === 13 && modifyPost(index)}
-                                        />
-                                        <Button className="confirm" variant="outline-primary" onClick={() => modifyPost(index)}>
-                                            <strong>확인</strong>
-                                        </Button>
-                                        <Button className="cancel" variant="outline-primary" onClick={() => setModifyVisible(false)}>
-                                            <strong>취소</strong>
-                                        </Button>
+                                    <div className="overviewPost">
+                                        <div className={`modifyForm ${selectedPostIndex === index && modifyVisible && "visible"}`}>
+                                            <Form.Control
+                                                className="me-auto modifyBox"
+                                                value={titleRenameInput}
+                                                onChange={(e) => setTitleRenameInput(e.target.value)}
+                                                onKeyUp={() => window.event.keyCode === 13 && modifyPost(index)}
+                                            />
+                                            <Button className="confirm" variant="outline-primary" onClick={() => modifyPost(index)}>
+                                                <strong>확인</strong>
+                                            </Button>
+                                            <Button className="cancel" variant="outline-primary" onClick={() => setModifyVisible(false)}>
+                                                <strong>취소</strong>
+                                            </Button>
+                                        </div>
+                                        <div
+                                            className="text"
+                                            onClick={() => {
+                                                console.log(post);
+                                                setSelectedPostId(post.id);
+                                                setSelectedPostIndex(index);
+                                                setContentModalVisible(true);
+                                            }}
+                                        >
+                                            <strong>{post.title}</strong>
+                                            <span>{post.content}</span>
+                                        </div>
+                                        <div className="buttonBox">
+                                            <Button className="modify" variant="outline-primary" onClick={() => openPostModify(index)}>
+                                                <strong>수정하기</strong>
+                                            </Button>
+                                            <Button className="delete" variant="outline-primary" onClick={() => deletePost(index)}>
+                                                <strong>삭제하기</strong>
+                                            </Button>
+                                            <Button className="like" variant="outline-primary" onClick={() => dispatch(plusLike(index))}>
+                                                <strong>❤</strong>
+                                                <span>{postData[index].like}</span>
+                                            </Button>
+                                        </div>
                                     </div>
-                                    <div className="text" onClick={() => console.log(post)}>
-                                        <strong>{post.title}</strong>
-                                        <span>{post.content}</span>
-                                    </div>
-                                    <div className="buttonBox">
-                                        <Button className="modify" variant="outline-primary" onClick={() => openPostModify(index)}>
-                                            <strong>수정하기</strong>
-                                        </Button>
-                                        <Button className="delete" variant="outline-primary" onClick={() => deletePost(index)}>
-                                            <strong>삭제하기</strong>
-                                        </Button>
-                                        <Button className="like" variant="outline-primary" onClick={() => dispatch(plusLikeData(index))}>
-                                            <strong>❤</strong>
-                                            <span>{likeData[index].like}</span>
-                                        </Button>
+
+                                    <div className={`contentModal ${selectedPostId === post.id && contentModalVisible && "visible"}`}>
+                                        <span className="date">{post.date}</span>
+                                        <p>{post.content}</p>
                                     </div>
                                 </div>
                             );

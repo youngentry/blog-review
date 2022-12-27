@@ -11,63 +11,83 @@
 }
 
 .post {
-    position: relative;
-    padding: 5px 10px;
-    display: flex;
-    align-items: center;
-    .text {
-        margin-right: auto;
-        cursor: pointer;
-        &:hover {
-            text-decoration: underline;
+    .overviewPost {
+        position: relative;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+
+        .text {
+            margin-right: auto;
+            cursor: pointer;
+            &:hover {
+                text-decoration: underline;
+            }
+            strong {
+                margin-right: 10px;
+            }
         }
-        strong {
-            margin-right: 10px;
+        .modifyForm {
+            display: none;
+            position: absolute;
+            width: calc(100% - 110px);
+            &.visible {
+                display: block;
+            }
+            .confirm {
+                position: absolute;
+                top: 0;
+                width: 81px;
+                right: 92px;
+                color: #000;
+                border-color: #000;
+                &:hover {
+                    color: #fff;
+                    border-color: #fff;
+                }
+            }
+            .cancel {
+                position: absolute;
+                top: 0;
+                width: 81px;
+                right: 0px;
+                color: #000;
+                border-color: #000;
+                &:hover {
+                    color: #fff;
+                    border-color: #fff;
+                }
+            }
+        }
+
+        .buttonBox {
+            display: flex;
+            gap: 10px;
+
+            .like {
+                width: 80px;
+                white-space: nowrap;
+                strong {
+                    margin-right: 5px;
+                }
+            }
         }
     }
-    .modifyForm {
+
+    .contentModal {
         display: none;
-        position: absolute;
-        width: calc(100% - 110px);
+        padding: 10px;
+        border-top: 1px solid #ddd;
+        background: rgb(255, 255, 255);
         &.visible {
             display: block;
         }
-        .confirm {
-            position: absolute;
-            top: 0;
-            width: 81px;
-            right: 92px;
-            color: #000;
-            border-color: #000;
-            &:hover {
-                color: #fff;
-                border-color: #fff;
-            }
-        }
-        .cancel {
-            position: absolute;
-            top: 0;
-            width: 81px;
-            right: 0px;
-            color: #000;
-            border-color: #000;
-            &:hover {
-                color: #fff;
-                border-color: #fff;
-            }
-        }
-    }
 
-    .buttonBox {
-        display: flex;
-        gap: 10px;
-
-        .like {
-            width: 80px;
-            white-space: nowrap;
-            strong {
-                margin-right: 5px;
-            }
+        .date {
+            display: inline-block;
+            font-size: 13px;
+            color: #999;
+            margin-bottom: 10px;
         }
     }
 }

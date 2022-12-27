@@ -1,13 +1,12 @@
 import { useRef } from "react";
 import { Button, Form, Stack } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { setLikeData, setPostData, setTitleInput } from "../store";
+import { setPostData, setTitleInput } from "../store";
 
 const WriteForm = () => {
     const dispatch = useDispatch();
     const postData = useSelector((state) => state.postData);
     const titleInput = useSelector((state) => state.titleInput);
-    const likeData = useSelector((state) => state.likeData);
 
     const titleInputRef = useRef();
     const nextId = useRef(0);
@@ -17,13 +16,9 @@ const WriteForm = () => {
             return titleInputRef.current.focus();
         }
         const tempPostData = [...postData];
-        tempPostData.unshift({ id: nextId.current, title: input, content: "내용 없음", date: `${new Date()}` });
+        tempPostData.unshift({ id: nextId.current, title: input, content: "내용 없음", like: 0, date: `${new Date()}` });
         dispatch(setPostData(tempPostData));
         dispatch(setTitleInput(""));
-
-        const tempLikes = [...likeData];
-        tempLikes.unshift({ id: nextId.current, like: 0 });
-        dispatch(setLikeData(tempLikes));
 
         nextId.current++;
     };

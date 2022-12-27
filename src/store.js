@@ -8,12 +8,14 @@ const postData = createSlice({
             return inputData.payload;
         },
         modifyPostData(state, indexAndInputArray) {
-            console.log(state, indexAndInputArray, "dddddddddd");
             state[indexAndInputArray.payload[0]].title = indexAndInputArray.payload[1];
+        },
+        plusLike(state, index) {
+            state[index.payload].like += 1;
         },
     },
 });
-export const { setPostData, modifyPostData } = postData.actions;
+export const { setPostData, modifyPostData, plusLike } = postData.actions;
 
 const titleInput = createSlice({
     name: "titleInput",
@@ -26,24 +28,9 @@ const titleInput = createSlice({
 });
 export const { setTitleInput } = titleInput.actions;
 
-const likeData = createSlice({
-    name: "likeData",
-    initialState: [],
-    reducers: {
-        setLikeData(state, inputLikeData) {
-            return inputLikeData.payload;
-        },
-        plusLikeData(state, index) {
-            state[index.payload].like += 1;
-        },
-    },
-});
-export const { setLikeData, plusLikeData } = likeData.actions;
-
 export default configureStore({
     reducer: {
         postData: postData.reducer,
         titleInput: titleInput.reducer,
-        likeData: likeData.reducer,
     },
 });
