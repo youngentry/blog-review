@@ -31,6 +31,12 @@ function App() {
         setLikeData(tempLikeData);
     };
 
+    const deletePost = (index) => {
+        const tempPostData = [...postData];
+        tempPostData.splice(index, 1);
+        setPostData(tempPostData);
+    };
+
     return (
         <div className="App">
             <div className="container">
@@ -52,7 +58,7 @@ function App() {
                                     <Button className="modify" variant="outline-primary" onClick={() => {}}>
                                         <strong>수정하기</strong>
                                     </Button>
-                                    <Button className="delete" variant="outline-primary" onClick={() => {}}>
+                                    <Button className="delete" variant="outline-primary" onClick={() => deletePost(index)}>
                                         <strong>삭제하기</strong>
                                     </Button>
                                     <Button className="like" variant="outline-primary" onClick={() => plusLike(index)}>
