@@ -1,10 +1,10 @@
 import "./css/reset.css";
 import "./css/App.scss";
 import Button from "react-bootstrap/Button";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Stack } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { modifyPostData, plusLikeData, setLikeData, setPostData, setTitleInput } from "./store";
+import { modifyPostData, plusLikeData, setPostData } from "./store";
 import WriteForm from "./components/WriteForm";
 
 function App() {
@@ -42,42 +42,46 @@ function App() {
             <div className="container">
                 <Stack gap={1}>
                     <WriteForm />
-                    {postData.map((post, index) => {
-                        return (
-                            <div key={post.id} className="bg-light border post">
-                                <div className={`modifyForm ${selectedPostIndex === index && modifyVisible && "visible"}`}>
-                                    <Form.Control
-                                        className="me-auto modifyBox"
-                                        value={titleRenameInput}
-                                        onChange={(e) => setTitleRenameInput(e.target.value)}
-                                        onKeyUp={() => window.event.keyCode === 13 && modifyPost(index)}
-                                    />
-                                    <Button className="confirm" variant="outline-primary" onClick={() => modifyPost(index)}>
-                                        <strong>확인</strong>
-                                    </Button>
-                                    <Button className="cancel" variant="outline-primary" onClick={() => setModifyVisible(false)}>
-                                        <strong>취소</strong>
-                                    </Button>
+                    {postData.length === 0 ? (
+                        <div>게시물이 없습니다.</div>
+                    ) : (
+                        postData.map((post, index) => {
+                            return (
+                                <div key={post.id} className="bg-light border post">
+                                    <div className={`modifyForm ${selectedPostIndex === index && modifyVisible && "visible"}`}>
+                                        <Form.Control
+                                            className="me-auto modifyBox"
+                                            value={titleRenameInput}
+                                            onChange={(e) => setTitleRenameInput(e.target.value)}
+                                            onKeyUp={() => window.event.keyCode === 13 && modifyPost(index)}
+                                        />
+                                        <Button className="confirm" variant="outline-primary" onClick={() => modifyPost(index)}>
+                                            <strong>확인</strong>
+                                        </Button>
+                                        <Button className="cancel" variant="outline-primary" onClick={() => setModifyVisible(false)}>
+                                            <strong>취소</strong>
+                                        </Button>
+                                    </div>
+                                    <div className="text" onClick={() => console.log(post)}>
+                                        <strong>{post.title}</strong>
+                                        <span>{post.content}</span>
+                                    </div>
+                                    <div className="buttonBox">
+                                        <Button className="modify" variant="outline-primary" onClick={() => openPostModify(index)}>
+                                            <strong>수정하기</strong>
+                                        </Button>
+                                        <Button className="delete" variant="outline-primary" onClick={() => deletePost(index)}>
+                                            <strong>삭제하기</strong>
+                                        </Button>
+                                        <Button className="like" variant="outline-primary" onClick={() => dispatch(plusLikeData(index))}>
+                                            <strong>❤</strong>
+                                            <span>{likeData[index].like}</span>
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div className="text" onClick={() => console.log(post)}>
-                                    <strong>{post.title}</strong>
-                                    <span>{post.content}</span>
-                                </div>
-                                <div className="buttonBox">
-                                    <Button className="modify" variant="outline-primary" onClick={() => openPostModify(index)}>
-                                        <strong>수정하기</strong>
-                                    </Button>
-                                    <Button className="delete" variant="outline-primary" onClick={() => deletePost(index)}>
-                                        <strong>삭제하기</strong>
-                                    </Button>
-                                    <Button className="like" variant="outline-primary" onClick={() => dispatch(plusLikeData(index))}>
-                                        <strong>❤</strong>
-                                        <span>{likeData[index].like}</span>
-                                    </Button>
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })
+                    )}
                 </Stack>
             </div>
         </div>
