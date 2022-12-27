@@ -1,7 +1,36 @@
-.likes {
-    width: 80px;
-    white-space: nowrap;
-    strong {
-        margin-right: 5px;
+.container {
+    margin-top: 100px;
+}
+
+.writeForm {
+    margin-bottom: 10px;
+    .writeButton {
+        white-space: nowrap;
+    }
+}
+
+.post {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    .text {
+        margin-right: auto;
+        strong {
+            margin-right: 10px;
+        }
+        span {
+        }
+    }
+
+    .buttonBox {
+        display: flex;
+        gap: 10px;
+
+        .like {
+            white-space: nowrap;
+            strong {
+                margin-right: 5px;
+            }
+        }
     }
 }
