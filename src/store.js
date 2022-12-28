@@ -10,8 +10,9 @@ const postData = createSlice({
         modifyPostData(state, idAndInputArray) {
             state.find((el) => el.id === idAndInputArray.payload[0]).title = idAndInputArray.payload[1];
         },
-        plusLike(state, index) {
-            state[index.payload].like += 1;
+        plusLike(state, id) {
+            console.log(id.payload);
+            state.find((el) => el.id === id.payload).like += 1;
         },
     },
 });

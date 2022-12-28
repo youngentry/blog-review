@@ -113,7 +113,7 @@ function App() {
                                             <Button className="delete" variant="outline-primary" onClick={() => deletePost(index)}>
                                                 <strong>삭제하기</strong>
                                             </Button>
-                                            <Button className="like" variant="outline-primary" onClick={() => dispatch(plusLike(index))}>
+                                            <Button className="like" variant="outline-primary" onClick={() => dispatch(plusLike(post.id))}>
                                                 <strong>❤</strong>
                                                 <span>{copiedPostData[index].like}</span>
                                             </Button>
