@@ -96,7 +96,13 @@ function App() {
                 <Stack gap={1}>
                     <div className="utility">
                         <div className="searchBox">
-                            <Button className="searchButton" onClick={() => setSearchVisible(!searchVisible)}>
+                            <Button
+                                className="searchButton"
+                                onClick={() => {
+                                    setSearchInputValue("");
+                                    setSearchVisible(!searchVisible);
+                                }}
+                            >
                                 {searchVisible ? "취소하기" : "검색하기"}
                             </Button>
                             <Form.Control
@@ -106,8 +112,13 @@ function App() {
                                 onChange={(e) => setSearchInputValue(e.target.value)}
                                 onKeyUp={() => window.event.keyCode === 13 && searchPost(searchInputValue)}
                             />
-                            <div className={`magnifyIcon ${searchVisible && "visible"}`} onClick={() => searchPost(searchInputValue)}>
-                                🔎
+                            <div
+                                className={`magnifyIcon ${searchVisible && "visible"}`}
+                                onClick={() => {
+                                    setSearchInputValue("");
+                                }}
+                            >
+                                ❌
                             </div>
                         </div>
                         <Form.Select className="sort" aria-label="Default select example" value={orderForSort} onChange={(e) => sortPost(e.target.value)}>
