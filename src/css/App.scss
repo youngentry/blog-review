@@ -15,6 +15,41 @@
     justify-content: flex-end;
     align-items: center;
     margin-bottom: 5px;
+
+    .searchBox {
+        position: relative;
+
+        .searchButton {
+            position: relative;
+            z-index: 1;
+        }
+
+        .searchInput {
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: translateX(calc(-100% + 54px));
+            width: 0%;
+            transition: 0.4s;
+
+            &.visible {
+                width: 500%;
+            }
+        }
+        .magnifyIcon {
+            opacity: 0;
+            position: absolute;
+            top: 50%;
+            right: 90px;
+            transform: translateY(-50%);
+            transition: 1s;
+            cursor: pointer;
+            &.visible {
+                opacity: 1;
+            }
+        }
+    }
+
     .sort {
         width: 110px;
         margin-left: 10px;
@@ -22,6 +57,11 @@
 }
 
 .post {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    &.stressBorder {
+        border: 1px solid #000;
+    }
     .overviewPost {
         position: relative;
         padding: 5px 10px;
@@ -88,8 +128,10 @@
     .contentModal {
         display: none;
         padding: 10px;
-        border-top: 1px solid #ddd;
         background: rgb(255, 255, 255);
+        border-top: 1px solid #ddd;
+        border-bottom-left-radius: 5px;
+        border-bottom-right-radius: 5px;
         &.visible {
             display: block;
         }
