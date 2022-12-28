@@ -25,13 +25,13 @@ function App() {
     };
 
     const openPostModify = (index) => {
-        setTitleRenameInput(postData[index].title);
+        setTitleRenameInput(copiedPostData[index].title);
         setSelectedPostIndex(index);
         setModifyVisible(true);
     };
 
-    const modifyPost = (index) => {
-        dispatch(modifyPostData([index, titleRenameInput]));
+    const modifyPost = (postId, titleRenameInput) => {
+        dispatch(modifyPostData([postId, titleRenameInput]));
         setModifyVisible(false);
     };
 
@@ -43,8 +43,6 @@ function App() {
     const sortPost = (order) => {
         const tempPostData = [...postData];
         setOrderForSort(order);
-        console.log(order);
-
         if (order === "new") {
             tempPostData.sort((a, b) => b.id - a.id);
         }
@@ -91,7 +89,7 @@ function App() {
                                                 onChange={(e) => setTitleRenameInput(e.target.value)}
                                                 onKeyUp={() => window.event.keyCode === 13 && modifyPost(index)}
                                             />
-                                            <Button className="confirm" variant="outline-primary" onClick={() => modifyPost(index)}>
+                                            <Button className="confirm" variant="outline-primary" onClick={() => modifyPost(post.id, titleRenameInput)}>
                                                 <strong>확인</strong>
                                             </Button>
                                             <Button className="cancel" variant="outline-primary" onClick={() => setModifyVisible(false)}>
