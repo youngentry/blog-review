@@ -1,0 +1,25 @@
+.writeForm {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+
+  .titleInput {
+  }
+  .contentInput {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    width: calc(100% + 78px);
+    left: 0;
+    bottom: 0;
+    z-index: 999;
+    transform: translateY(calc(100% + 10px));
+    &.visible {
+      opacity: 1;
+    }
+  }
+  .writeButton {
+    white-space: nowrap;
+  }
+}
